@@ -36,4 +36,26 @@ public class HelloController {
             String javaVersion,
             int cpuCores
     ) { }
+    @GetMapping("/fibonacci")
+    public Object fibonacci(@RequestParam(defaultValue = "10") int n) {
+        if (n < 1 || n > 50) {
+            return "n must be between 1 and 50";
+        }
+
+        long[] numbers = new long[n];
+
+        if (n >= 1) {
+            numbers[0] = 0;
+        }
+
+        if (n >= 2) {
+            numbers[1] = 1;
+        }
+
+        for (int i = 2; i < n; i++) {
+            numbers[i] = numbers[i - 1] + numbers[i - 2];
+        }
+
+        return numbers;
+    }
 }
