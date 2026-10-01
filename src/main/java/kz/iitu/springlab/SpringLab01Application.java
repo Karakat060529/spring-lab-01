@@ -1,9 +1,10 @@
 package kz.iitu.springlab;
-
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class SpringLab01Application {
 
 	public static void main(String[] args) {
