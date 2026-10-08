@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f7f4;
+    margin: 40px;
+    color: #263b30;
+}
+
+h1 {
+    color: #28734a;
+    text-align: center;
+}
+
+table {
+    width: 85%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #d5e5d9;
+    text-align: left;
+}
+
+th {
+    background-color: #438b62;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #eef6f0;
+}
+
+.flash {
+    color: green;
+    text-align: center;
+    font-weight: bold;
+}
