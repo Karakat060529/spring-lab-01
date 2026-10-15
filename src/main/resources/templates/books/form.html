@@ -15,31 +15,35 @@
 
 <form th:action="@{/books}" th:object="${form}" method="post">
 
-    <!-- Блок общих ошибок строго ВНУТРИ тега form -->
+    <!-- Блок общих ошибок -->
     <div class="alert" th:if="${#fields.hasAnyErrors()}">
         <ul>
             <li th:each="e : ${#fields.allErrors()}" th:text="${e}"></li>
         </ul>
     </div>
 
+    <!-- Название книги -->
     <div>
         <label th:text="#{book.title}">Title</label><br>
         <input type="text" th:field="*{title}" th:errorclass="is-invalid">
         <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
     </div>
 
+    <!-- Автор -->
     <div>
         <label th:text="#{book.author}">Author</label><br>
         <input type="text" th:field="*{author}" th:errorclass="is-invalid">
         <span class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
     </div>
 
+    <!-- Год -->
     <div>
         <label th:text="#{book.year}">Year</label><br>
         <input type="number" th:field="*{year}" th:errorclass="is-invalid">
         <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
     </div>
 
+    <!-- Жанр -->
     <div>
         <label th:text="#{book.genre}">Genre</label><br>
         <select th:field="*{genre}" th:errorclass="is-invalid">
@@ -49,6 +53,14 @@
         <span class="error" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></span>
     </div>
 
+    <!-- Издательство (Вариант 8: вложенный объект) -->
+    <div>
+        <label th:text="#{publisher.name}">Publisher</label><br>
+        <input type="text" th:field="*{publisher.name}" th:errorclass="is-invalid">
+        <span class="error" th:if="${#fields.hasErrors('publisher.name')}" th:errors="*{publisher.name}"></span>
+    </div>
+
+    <!-- Чекбокс доступности -->
     <div style="margin-top: 10px;">
         <label>
             <input type="checkbox" th:field="*{available}">
@@ -56,11 +68,10 @@
         </label>
     </div>
 
+    <!-- Кнопка отправки -->
     <div style="margin-top: 15px;">
         <button type="submit" th:text="#{form.submit}">Save</button>
     </div>
 </form>
 </body>
 </html>
-```[cite: 1, 10]
-

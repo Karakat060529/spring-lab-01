@@ -1,6 +1,6 @@
-
 package kz.iitu.springlab.web;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -26,9 +26,11 @@ public class BookForm {
 
     private boolean available;
 
-    public BookForm() {
-    }
+    // Вариант 8: Вложенный объект издательства с валидацией
+    @Valid
+    private Publisher publisher = new Publisher();
 
+    // Геттеры и сеттеры для всех полей
     public String getTitle() {
         return title;
     }
@@ -68,4 +70,14 @@ public class BookForm {
     public void setAvailable(boolean available) {
         this.available = available;
     }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
 }
+
+
