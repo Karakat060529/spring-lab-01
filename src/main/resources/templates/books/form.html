@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{book.new}">New book</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<h1 th:text="#{book.new}">New book</h1>
+
+<!-- Ссылки для переключения языка -->
+<div style="margin-bottom: 15px;">
+    <a href="?lang=en">English</a> | <a href="?lang=ru">Русский</a>
+</div>
+
+<form th:action="@{/books}" th:object="${form}" method="post">
+
+    <!-- Блок общих ошибок строго ВНУТРИ тега form -->
+    <div class="alert" th:if="${#fields.hasAnyErrors()}">
+        <ul>
+            <li th:each="e : ${#fields.allErrors()}" th:text="${e}"></li>
+        </ul>
+    </div>
+
+    <div>
+        <label th:text="#{book.title}">Title</label><br>
+        <input type="text" th:field="*{title}" th:errorclass="is-invalid">
+        <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+    </div>
+
+    <div>
+        <label th:text="#{book.author}">Author</label><br>
+        <input type="text" th:field="*{author}" th:errorclass="is-invalid">
+        <span class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
+    </div>
+
+    <div>
+        <label th:text="#{book.year}">Year</label><br>
+        <input type="number" th:field="*{year}" th:errorclass="is-invalid">
+        <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
+    </div>
+
+    <div>
+        <label th:text="#{book.genre}">Genre</label><br>
+        <select th:field="*{genre}" th:errorclass="is-invalid">
+            <option value="">—</option>
+            <option th:each="g : ${genres}" th:value="${g}" th:text="${g}"></option>
+        </select>
+        <span class="error" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></span>
+    </div>
+
+    <div style="margin-top: 10px;">
+        <label>
+            <input type="checkbox" th:field="*{available}">
+            <span th:text="#{book.available}">Available</span>
+        </label>
+    </div>
+
+    <div style="margin-top: 15px;">
+        <button type="submit" th:text="#{form.submit}">Save</button>
+    </div>
+</form>
+</body>
+</html>
+```[cite: 1, 10]
+
