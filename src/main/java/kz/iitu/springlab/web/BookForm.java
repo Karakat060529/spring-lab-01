@@ -26,11 +26,9 @@ public class BookForm {
 
     private boolean available;
 
-    // Вариант 8: Вложенный объект издательства с валидацией
     @Valid
     private Publisher publisher = new Publisher();
 
-    // Геттеры и сеттеры для всех полей
     public String getTitle() {
         return title;
     }

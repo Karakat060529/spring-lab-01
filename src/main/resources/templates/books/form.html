@@ -10,7 +10,9 @@
 
 <!-- Ссылки для переключения языка -->
 <div style="margin-bottom: 15px;">
-    <a href="?lang=en">English</a> | <a href="?lang=ru">Русский</a>
+    <a th:href="@{/books/new(lang='en')}">English</a>
+    |
+    <a th:href="@{/books/new(lang='ru')}">Русский</a>
 </div>
 
 <form th:action="@{/books}" th:object="${form}" method="post">
