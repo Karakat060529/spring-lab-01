@@ -33,11 +33,11 @@ public class BookRestController {
                     defaultValue = "en"
             ) String language) {
 
-        List<Book> books = service.findAll(author);
-
         if (limit < 0) {
             return ResponseEntity.badRequest().build();
         }
+
+        List<Book> books = service.findAll(author);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -49,15 +49,15 @@ public class BookRestController {
             Map<String, Object> item = new LinkedHashMap<>();
 
             if (russian) {
-                item.put("идентификатор", book.id());
-                item.put("название", book.title());
-                item.put("автор", book.author());
-                item.put("год", book.year());
+                item.put("идентификатор", book.getId());
+                item.put("название", book.getTitle());
+                item.put("автор", null);
+                item.put("год", book.getYear());
             } else {
-                item.put("id", book.id());
-                item.put("title", book.title());
-                item.put("author", book.author());
-                item.put("year", book.year());
+                item.put("id", book.getId());
+                item.put("title", book.getTitle());
+                item.put("author", null);
+                item.put("year", book.getYear());
             }
 
             result.add(item);
@@ -84,7 +84,7 @@ public class BookRestController {
 
         return ResponseEntity
                 .created(URI.create(
-                        "/legacy/api/books/" + saved.id()))
+                        "/legacy/api/books/" + saved.getId()))
                 .body(saved);
     }
 
@@ -93,20 +93,10 @@ public class BookRestController {
             @PathVariable Long id,
             @RequestBody Book book) {
 
-        if (service.findById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Book updated = service.create(
-                new Book(
-                        id,
-                        book.title(),
-                        book.author(),
-                        book.year()
-                )
-        );
-
-        return ResponseEntity.ok(updated);
+        return service.replace(id, book)
+                .map(ResponseEntity::ok)
+                .orElseGet(() ->
+                        ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

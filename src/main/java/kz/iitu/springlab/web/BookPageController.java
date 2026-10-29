@@ -1,3 +1,4 @@
+
 package kz.iitu.springlab.web;
 
 import jakarta.validation.Valid;
@@ -12,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/books")
 public class BookPageController {
-
 
     private final BookService service;
 
@@ -29,7 +29,7 @@ public class BookPageController {
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("books", service.findAll("")); // или service.findAll(null), в зависимости от того, как ты писала его в лабораторной №5
+        model.addAttribute("books", service.findAll(null));
         return "books/list";
     }
 
@@ -45,14 +45,17 @@ public class BookPageController {
             return "books/form";
         }
 
-        Book saved = service.create(
-                new Book(null, form.getTitle(),
-                        form.getAuthor(), form.getYear())
+        Book book = new Book(
+                form.getTitle(),
+                form.getGenre(),
+                form.getYear()
         );
+
+        Book saved = service.create(book);
 
         redirect.addFlashAttribute(
                 "message",
-                "Book «" + saved.title() + "» has been added"
+                "Book «" + saved.getTitle() + "» has been added"
         );
 
         return "redirect:/books";

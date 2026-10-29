@@ -6,6 +6,10 @@ import jakarta.validation.Valid;
 import kz.iitu.springlab.catalog.Book;
 import kz.iitu.springlab.catalog.BookService;
 import kz.iitu.springlab.catalog.BookNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Slice;
 
 import kz.iitu.springlab.web.dto.BookMapper;
 import kz.iitu.springlab.web.dto.BookRequest;
@@ -22,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.net.URI;
 import java.util.List;
@@ -45,20 +50,24 @@ public class BookApiController {
         this.mapper = mapper;
     }
 
-    // GET - All books
-    @Operation(summary = "Get all books")
+
+    // Task 4 - Pagination and Sorting
+    @Operation(summary = "Get books with pagination and sorting")
     @ApiResponse(
             responseCode = "200",
-            description = "List of books returned successfully"
+            description = "Page of books returned successfully"
     )
     @GetMapping
-    public List<BookResponse> list(
-            @RequestParam(required = false) String author) {
+    public Page<BookResponse> list(
+            @PageableDefault(size = 5, sort = "title")
+            Pageable pageable) {
 
-        return mapper.toResponseList(
-                service.findAll(author)
-        );
+        return service.findAllPaged(pageable)
+                .map(mapper::toResponse);
     }
+
+
+
 
     // GET - API Version 1
     @Operation(
@@ -155,7 +164,7 @@ public class BookApiController {
 
         return ResponseEntity
                 .created(URI.create(
-                        "/api/books/" + saved.id()))
+                        "/api/books/" + saved.getId()))
                 .body(mapper.toResponse(saved));
     }
 
@@ -213,4 +222,24 @@ public class BookApiController {
 
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/slice")
+    public Slice<BookResponse> getBooksSlice(
+            @PageableDefault(size = 5, sort = "title") Pageable pageable) {
+
+        return service.findAllSliced(pageable)
+                .map(mapper::toResponse);
+    }
+
+    @GetMapping("/search")
+    public List<BookResponse> searchBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Genre genre,
+            @RequestParam(required = false) Integer year) {
+
+        return service.searchBooks(title, genre, year)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+    }
+
 }
