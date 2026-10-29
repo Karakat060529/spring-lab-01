@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/legacy/api/books")
 public class BookRestController {
 
     private final BookService service;
@@ -23,7 +23,7 @@ public class BookRestController {
         this.service = service;
     }
 
-    // Variant 8: Accept-Language
+    // Lab 6 - Variant 8: Accept-Language
     @GetMapping
     public ResponseEntity<List<Map<String, Object>>> list(
             @RequestParam(required = false) String author,
@@ -83,10 +83,10 @@ public class BookRestController {
         Book saved = service.create(book);
 
         return ResponseEntity
-                .created(URI.create("/api/books/" + saved.id()))
+                .created(URI.create(
+                        "/legacy/api/books/" + saved.id()))
                 .body(saved);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> update(
@@ -98,12 +98,16 @@ public class BookRestController {
         }
 
         Book updated = service.create(
-                new Book(id, book.title(), book.author(), book.year())
+                new Book(
+                        id,
+                        book.title(),
+                        book.author(),
+                        book.year()
+                )
         );
 
         return ResponseEntity.ok(updated);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
