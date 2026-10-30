@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.List;
 
@@ -57,6 +56,10 @@ public interface BookRepository extends
 
     @Query("SELECT b FROM Book b JOIN FETCH b.author")
     Slice<Book> findBooksAsSlice(Pageable pageable);
+
+    @EntityGraph(attributePaths = "author")
+    @Query("SELECT b FROM Book b")
+    List<Book> findAllWithAuthors();
 
 
 }
